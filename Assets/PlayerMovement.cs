@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private TrailRenderer tr; 
     [SerializeField] private SpriteRenderer sr; 
     [SerializeField] private GameObject gameObject; 
+    [SerializeField] private Animator animator; 
 
     private GravityManager gravityManager = new GravityManager(); 
     
@@ -35,6 +36,11 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.LeftShift) && canDash)
             StartCoroutine(Dash()); 
 
+        if(horizontal != 0) 
+            animator.SetBool("isRunning", true); 
+        else 
+            animator.SetBool("isRunning", false); 
+            
         gravityManager.flipRelativeToGravity(sr, horizontal, transform); 
         gravityManager.flipCameraRelativeToGravity(gameObject); 
              
