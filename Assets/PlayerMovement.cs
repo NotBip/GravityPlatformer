@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private float playerSpeed = 3;  
     private float horizontal; 
     private float jumpPower = 7; 
+    private bool isGrounded = false; 
 
     private bool canDash = true; 
     private bool isDashing = false; 
@@ -30,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
         horizontal = Input.GetAxisRaw("Horizontal");  
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
             rb.velocity = gravityManager.getJumpRelativeToGravity(rb, jumpPower);   
 
         if(Input.GetKeyDown(KeyCode.LeftShift) && canDash)
@@ -77,7 +78,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
-    { 
+    {   
+        isGrounded = true; 
         if(collider.tag == "Bottom")
             gravityManager.flipToBottom(); 
         else if(collider.tag == "Right")
@@ -88,4 +90,10 @@ public class PlayerMovement : MonoBehaviour
             gravityManager.flipToLeft(); 
  
     }
+    private void OnTriggerExit2D(Collider2D collider2D)
+    { 
+        isGrounded = false; 
+    }
+
+
 }
